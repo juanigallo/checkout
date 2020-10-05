@@ -1,25 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Products from "./components/Products";
+import Checkout from "./components/Checkout";
+
+import { ToggleCartProvider } from "./contexts/ToggleCart";
+import { ProductProvider } from "./contexts/Product";
 
 function App() {
+  const [toggle, setToggle] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  function handleToggle() {
+    setToggle((prevState) => !prevState);
+  }
+
+  function addProduct(data) {
+    setTotalPrice((prevState) => prevState + data.price);
+    setProducts((prevState) => [...prevState, data]);
+  }
+
+  const toggleCartContext = {
+    toggle: true,
+    handleToggle: handleToggle
+  };
+
+  const productContext = {
+    products: products,
+    totalPrice: totalPrice,
+    addProduct: addProduct
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ToggleCartProvider value={toggleCartContext}>
+      <Navbar />
+
+      <ProductProvider value={productContext}>
+        <Products />
+        {toggle && <Checkout />}
+      </ProductProvider>
+    </ToggleCartProvider>
   );
 }
 

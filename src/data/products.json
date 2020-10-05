@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Producto grande",
+    "price": 1000
+  },
+  {
+    "name": "Producto pequeño 1",
+    "price": 50
+  },
+  {
+    "name": "Producto pequeño 2",
+    "price": 10
+  }
+]
